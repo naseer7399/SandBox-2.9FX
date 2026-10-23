@@ -2021,30 +2021,34 @@ function printReceipt(paymentId){
   if(!p) return;
   const f = feeById(p.feeId);
   const s = studentById(p.studentId);
-  const win = window.open('', '_blank', 'width=480,height=680');
+  const win = window.open('', '_blank', 'width=460,height=640');
   win.document.write(`<!doctype html><html><head><title>Receipt ${esc(p.receipt)}</title>
     <style>
-      body{ font-family: Arial, sans-serif; padding: 28px; color:#1C2230; }
-      .letterhead{ display:flex; align-items:center; gap:12px; margin-bottom: 16px; }
-      .letterhead .badge-mark{ width:44px; height:44px; border-radius:10px; background:#1F3B57; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:17px; overflow:hidden; flex:none; }
+      @page{ size: 105mm 148mm; margin: 6mm; }  /* A6 portrait */
+      *{ box-sizing: border-box; }
+      html,body{ margin:0; }
+      body{ font-family: Arial, sans-serif; padding: 0; color:#1C2230; width: 93mm; max-height: 136mm; overflow: hidden; page-break-inside: avoid; break-inside: avoid; }
+      @media screen{ body{ margin: 0 auto; padding: 6mm; width: 105mm; max-height: none; overflow: visible; } }
+      .letterhead{ display:flex; align-items:center; gap:10px; margin-bottom: 8px; }
+      .letterhead .badge-mark{ width:38px; height:38px; border-radius:9px; background:#1F3B57; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:15px; overflow:hidden; flex:none; }
       .letterhead .badge-mark img{ width:100%; height:100%; object-fit:cover; }
-      h1{ font-size:18px; margin: 0 0 2px; }
-      .addr{ font-size: 12px; color:#5B6472; }
-      table{ width:100%; border-collapse: collapse; margin-top: 14px; }
-      td{ padding: 7px 0; border-bottom: 1px solid #E4DFD1; font-size: 13px; }
+      h1{ font-size:14px; margin: 0 0 2px; }
+      .addr{ font-size: 9.5px; color:#5B6472; line-height:1.3; }
+      table{ width:100%; border-collapse: collapse; margin-top: 6px; }
+      td{ padding: 4px 0; border-bottom: 1px solid #E4DFD1; font-size: 11px; }
       td.k{ color:#5B6472; }
       td.v{ text-align:right; font-weight:600; }
-      .total{ font-size: 16px; margin-top: 14px; display:flex; justify-content:space-between; font-weight:700; padding-top:6px; }
-      .signoff{ display:flex; justify-content:space-between; align-items:flex-end; margin-top: 48px; }
+      .total{ font-size: 13px; margin-top: 8px; display:flex; justify-content:space-between; font-weight:700; padding-top:2px; }
+      .signoff{ display:flex; justify-content:space-between; align-items:flex-end; margin-top: 10px; }
       .signoff .box{ text-align:center; width: 44%; }
-      .signoff .line{ height: 90px; }
-      .signoff .label{ font-size: 11.5px; color:#5B6472; }
+      .signoff .line{ height: 70px; }
+      .signoff .label{ font-size: 10px; color:#5B6472; }
     </style></head><body>
     <div class="letterhead">
       <div class="badge-mark">${DB.school.logo ? `<img src="${DB.school.logo}">` : 'IS'}</div>
       <div><h1>${esc(DB.school.name)}</h1><div class="addr">${esc(DB.school.address)}<br>Phone: ${esc(DB.school.phone)}</div></div>
     </div>
-    <h2 style="font-size:14px;border-top:1px solid #E4DFD1;border-bottom:1px solid #E4DFD1;padding:8px 0;">Fee payment receipt</h2>
+    <h2 style="font-size:12px;margin:0;border-top:1px solid #E4DFD1;border-bottom:1px solid #E4DFD1;padding:5px 0;">Fee payment receipt</h2>
     <table>
       <tr><td class="k">Receipt no.</td><td class="v">${esc(p.receipt)}</td></tr>
       <tr><td class="k">Date</td><td class="v">${fmtDate(p.date)}</td></tr>
