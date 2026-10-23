@@ -1514,7 +1514,7 @@ function openAnnouncementSendList(ids, message, channel){
 }
 
 function openMultiFeeModal(presetStudentId){
-  const presetTypes = ['Admission Fee','School Fee','Books Fee','Van Fee','Last Year due'];
+  const presetTypes = ['Last Year due','Admission Fee','Books Fee','School Fee','Van Fee'];
   const rowHTML = (pick) => `
     <div class="fee-row">
       <div class="fee-row-main">
@@ -1624,7 +1624,7 @@ function openMultiFeeModal(presetStudentId){
 function openFeeModal(id, presetStudentId){
   if(!id){ openMultiFeeModal(presetStudentId); return; }
   const editing = id ? feeById(id) : null;
-  const presetTypes = ['Admission Fee','School Fee','Books Fee','Van Fee','Last Year due'];
+  const presetTypes = ['Last Year due','Admission Fee','Books Fee','School Fee','Van Fee'];
   const isCustomType = editing && !presetTypes.includes(editing.type);
   openModal({
     title: editing ? `Edit fee ${editing.id}` : 'Add fee record',
@@ -1645,11 +1645,11 @@ function openFeeModal(id, presetStudentId){
       <div class="field-row">
         <div class="field"><label>Academic year</label><input type="text" id="f_year" value="${esc(editing?editing.year:'2026-27')}"></div>
         <div class="field"><label>Fee type</label><select id="f_type">
-          <option ${editing&&editing.type==='Admission Fee'?'selected':''}>Admission Fee</option>
-          <option ${editing&&editing.type==='School Fee'?'selected':''}>School Fee</option>
-          <option ${editing&&editing.type==='Books Fee'?'selected':''}>Books Fee</option>
-          <option ${editing&&editing.type==='Van Fee'?'selected':''}>Van Fee</option>
           <option ${editing&&editing.type==='Last Year due'?'selected':''}>Last Year due</option>
+          <option ${editing&&editing.type==='Admission Fee'?'selected':''}>Admission Fee</option>
+          <option ${editing&&editing.type==='Books Fee'?'selected':''}>Books Fee</option>
+          <option ${editing&&editing.type==='School Fee'?'selected':''}>School Fee</option>
+          <option ${editing&&editing.type==='Van Fee'?'selected':''}>Van Fee</option>
           <option value="Other" ${isCustomType?'selected':''}>Other</option>
         </select></div>
       </div>
@@ -1870,11 +1870,11 @@ function openPaymentModal(){
       <div class="field-row">
         <div class="field"><label>Fee type</label><select id="p_feeTypeFilter">
           <option value="">All fee types</option>
-          <option>Admission Fee</option>
-          <option>School Fee</option>
-          <option>Books Fee</option>
-          <option>Van Fee</option>
           <option>Last Year due</option>
+          <option>Admission Fee</option>
+          <option>Books Fee</option>
+          <option>School Fee</option>
+          <option>Van Fee</option>
           <option value="Other">Other</option>
         </select></div>
         <div class="field" id="p_feeTypeOtherWrap" style="display:none;">
