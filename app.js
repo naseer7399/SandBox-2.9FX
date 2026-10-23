@@ -733,12 +733,12 @@ function logout(){
    App shell
    --------------------------------------------------------------- */
 const NAV_ITEMS = [
-  { id:'dashboard', label:'Dashboard', icon:'dashboard', roles:['management','teacher'] }, 
+/*  { id:'dashboard', label:'Dashboard', icon:'dashboard', roles:['management','teacher'] },  */
   { id:'students',  label:'Students',  icon:'students',  roles:['management','teacher','feepayments'] },
   { id:'fees',      label:'Fees',      icon:'fees',       roles:['management'] },
   { id:'payments',  label:'Payments',  icon:'payments',   roles:['management','feepayments'] },
-  { id:'attendance', label:'Attendance', icon:'calendar', roles:['management','teacher'] },
-  { id:'reportcards', label:'Report Cards', icon:'grad', roles:['management','teacher'] }, 
+/*  { id:'attendance', label:'Attendance', icon:'calendar', roles:['management','teacher'] },  
+  { id:'reportcards', label:'Report Cards', icon:'grad', roles:['management','teacher'] },   */
   { id:'accounts',  label:'Accounts',  icon:'accounts',   roles:['management'] },
   { id:'reports',   label:'Reports',   icon:'reports',    roles:['management','teacher'] },
   { id:'notifications', label:'Notifications', icon:'bell', roles:['management'] },
