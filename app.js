@@ -733,12 +733,12 @@ function logout(){
    App shell
    --------------------------------------------------------------- */
 const NAV_ITEMS = [
-/*  { id:'dashboard', label:'Dashboard', icon:'dashboard', roles:['management','teacher'] },  */
+  { id:'dashboard', label:'Dashboard', icon:'dashboard', roles:['management','teacher'] },
   { id:'students',  label:'Students',  icon:'students',  roles:['management','teacher','feepayments'] },
   { id:'fees',      label:'Fees',      icon:'fees',       roles:['management'] },
   { id:'payments',  label:'Payments',  icon:'payments',   roles:['management','feepayments'] },
-/*  { id:'attendance', label:'Attendance', icon:'calendar', roles:['management','teacher'] },  
-  { id:'reportcards', label:'Report Cards', icon:'grad', roles:['management','teacher'] },   */
+/*  { id:'attendance', label:'Attendance', icon:'calendar', roles:['management','teacher'] },
+  { id:'reportcards', label:'Report Cards', icon:'grad', roles:['management','teacher'] }, */
   { id:'accounts',  label:'Accounts',  icon:'accounts',   roles:['management'] },
   { id:'reports',   label:'Reports',   icon:'reports',    roles:['management','teacher'] },
   { id:'notifications', label:'Notifications', icon:'bell', roles:['management'] },
@@ -1284,18 +1284,20 @@ function renderStudentProfile(){
 /* ---------------------------------------------------------------
    Fees
    --------------------------------------------------------------- */
-let feeFilter = { q:'', status:'' };
+let feeFilter = { q:'', status:'', class:'' };
 
 function renderFees(){
   setTopbar('Fee structure', 'Set fee amounts and discounts per student');
   renderFeesShell();
 }
 function renderFeesShell(){
+  const classes = [...new Set(DB.students.map(s => String(s.class == null ? '' : s.class).trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b, undefined, { numeric:true }));
   setContent(`
     <div class="panel">
       <div class="panel-head">
         <div class="toolbar">
           <div class="search-input">${ICONS.search}<input type="text" id="feeSearch" placeholder="&emsp;Search by Name or Admission no." value="${esc(feeFilter.q)}" style="width:300px"></div>
+          <select id="feeClassFilter" style="width:140px"><option value="">All classes</option>${classes.map(c=>`<option ${feeFilter.class===c?'selected':''} value="${esc(c)}">Class ${esc(c)}</option>`).join('')}</select>
           <select id="feeStatusFilter" style="width:150px"><option value="">All statuses</option><option ${feeFilter.status==='Paid'?'selected':''}>Paid</option><option ${feeFilter.status==='Partial'?'selected':''}>Partial</option><option ${feeFilter.status==='Pending'?'selected':''}>Pending</option></select>
         </div>
         <button class="btn" id="btnPrintFees">${ICONS.print}Print</button>
@@ -1305,6 +1307,7 @@ function renderFeesShell(){
     </div>
   `);
   document.getElementById('feeSearch').addEventListener('input', e => { feeFilter.q = e.target.value; renderFeesTable(); });
+  document.getElementById('feeClassFilter').addEventListener('change', e => { feeFilter.class = e.target.value; renderFeesTable(); });
   document.getElementById('feeStatusFilter').addEventListener('change', e => { feeFilter.status = e.target.value; renderFeesTable(); });
   document.getElementById('btnAddFee').addEventListener('click', () => openFeeModal());
   document.getElementById('btnPrintFees').addEventListener('click', () => printContainer('Fee structure'));
@@ -1316,7 +1319,9 @@ function renderFeesTable(){
     const name = studentName(x.fee.studentId).toLowerCase();
     const matchQ = !q || name.includes(q) || x.fee.studentId.toLowerCase().includes(q) || x.fee.id.toLowerCase().includes(q);
     const matchS = !feeFilter.status || x.calc.status === feeFilter.status;
-    return matchQ && matchS;
+    const stu = studentById(x.fee.studentId);
+    const matchC = !feeFilter.class || (stu && String(stu.class == null ? '' : stu.class).trim() === feeFilter.class);
+    return matchQ && matchS && matchC;
   });
   const area = document.getElementById('feesTableArea');
   if(!area) return;
@@ -2030,9 +2035,9 @@ function printReceipt(paymentId){
       td.k{ color:#5B6472; }
       td.v{ text-align:right; font-weight:600; }
       .total{ font-size: 16px; margin-top: 14px; display:flex; justify-content:space-between; font-weight:700; padding-top:6px; }
-      .signoff{ display:flex; justify-content:space-between; align-items:flex-end; margin-top: 64px; }
+      .signoff{ display:flex; justify-content:space-between; align-items:flex-end; margin-top: 48px; }
       .signoff .box{ text-align:center; width: 44%; }
-      .signoff .line{ border-top: 1px solid #1C2230; margin-bottom: 6px; height: 40px; }
+      .signoff .line{ height: 90px; }
       .signoff .label{ font-size: 11.5px; color:#5B6472; }
     </style></head><body>
     <div class="letterhead">
